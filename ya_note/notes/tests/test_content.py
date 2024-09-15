@@ -21,7 +21,7 @@ class TestContent(TestCase):
                                        author=cls.author)
         cls.urls = (
             ('notes:add', None),
-            ('notes:edit',  (cls.note.slug,))
+            ('notes:edit', (cls.note.slug,))
         )
 
     def test_notes_list_for_different_users(self):
