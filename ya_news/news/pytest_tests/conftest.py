@@ -40,8 +40,8 @@ def not_author_client(not_author):
 @pytest.fixture
 def comment(news, author):
     comment = Comment.objects.create(
-            news=news,
-            author=author,
-            text='Текст комментария'
+        news=news,
+        author=author,
+        text='Текст комментария'
         )
     return comment
