@@ -11,6 +11,7 @@ from pytils.translit import slugify
 
 User = get_user_model()
 
+
 class TestNoteCreation(TestCase):
 
     @classmethod
@@ -58,14 +59,15 @@ class TestNoteCreation(TestCase):
         url = reverse('notes:add')
         self.form_data.pop('slug')
         response = self.author_client.post(url, data=self.form_data)
-        self.assertRedirects(response, self.success_url) 
+        self.assertRedirects(response, self.success_url)
         assert Note.objects.count() == 1
         new_note = Note.objects.get()
         expected_slug = slugify(self.form_data['title'])
         assert new_note.slug == expected_slug
 
+
 class TestNoteEditDelete(TestCase):
-    
+
     @classmethod
     def setUpTestData(cls):
         cls.author = User.objects.create(username='Автор')
@@ -87,7 +89,6 @@ class TestNoteEditDelete(TestCase):
         cls.edit_url = reverse('notes:edit', args=(cls.note.slug,))
         cls.success_url = reverse('notes:success')
 
-
     def test_author_can_edit_note(self):
         response = self.author_client.post(self.edit_url, self.form_data)
         self.assertRedirects(response, self.success_url)
@@ -108,7 +109,6 @@ class TestNoteEditDelete(TestCase):
         response = self.author_client.post(self.delete_url)
         self.assertRedirects(response, self.success_url)
         assert Note.objects.count() == 0
-
 
     def test_other_user_cant_delete_note(self):
         response = self.not_author_client.post(self.delete_url)

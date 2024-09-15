@@ -8,6 +8,7 @@ from notes.models import Note
 
 User = get_user_model()
 
+
 class TestContent(TestCase):
 
     @classmethod
@@ -22,7 +23,6 @@ class TestContent(TestCase):
             ('notes:add', None),
             ('notes:edit',  (cls.note.slug,))
         )
-        
 
     def test_notes_list_for_different_users(self):
         users_note_in_list = (

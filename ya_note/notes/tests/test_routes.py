@@ -8,6 +8,7 @@ from notes.models import Note
 
 User = get_user_model()
 
+
 class TestRoutes(TestCase):
 
     @classmethod
