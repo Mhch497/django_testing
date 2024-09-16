@@ -1,40 +1,7 @@
-import pytest
-from datetime import datetime, timedelta
-
 from django.urls import reverse
-from django.utils import timezone
 
 from news.forms import CommentForm
-from news.models import News, Comment
 from yanews import settings
-
-
-@pytest.fixture(autouse=True)
-def ten_news(db):
-    today = datetime.today()
-    News.objects.bulk_create(
-        News(
-            title=f'Новость {index}',
-            text='Просто текст.',
-            date=today - timedelta(days=index))
-        for index in range(settings.NEWS_COUNT_ON_HOME_PAGE + 1)
-    )
-
-
-@pytest.fixture
-def news(django_user_model):
-    news = News.objects.create(
-        title='Тестовая новость', text='Просто текст.'
-    )
-    author = django_user_model.objects.create(username='Комментатор')
-    now = timezone.now()
-    for index in range(10):
-        comment = Comment.objects.create(
-            news=news, author=author, text=f'Tекст {index}',
-        )
-        comment.created = now + timedelta(days=index)
-        comment.save()
-    return news
 
 
 def test_news_count(client):

@@ -21,7 +21,7 @@ class News(models.Model):
 class Comment(models.Model):
     news = models.ForeignKey(
         News,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,

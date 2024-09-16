@@ -11,6 +11,8 @@ User = get_user_model()
 
 class TestRoutes(TestCase):
 
+    LOGIN_URL = 'users:login'
+
     @classmethod
     def setUpTestData(cls):
         cls.author = User.objects.create(username='Автор')
@@ -23,7 +25,7 @@ class TestRoutes(TestCase):
 
     def test_home_page(self):
         for name in ('notes:home',
-                     'users:login',
+                     self.LOGIN_URL,
                      'users:logout',
                      'users:signup'):
             with self.subTest(name=name):
@@ -53,10 +55,9 @@ class TestRoutes(TestCase):
                     self.assertEqual(response.status_code, status)
 
     def test_redirect_for_anonymous_client(self):
-        login_url = reverse('users:login')
         for name in self.changing_urls:
             with self.subTest(name=name):
                 url = reverse(name, args=(self.note.slug,))
-                redirect_url = f'{login_url}?next={url}'
+                redirect_url = f'{reverse(self.LOGIN_URL)}?next={url}'
                 response = self.client.get(url)
                 self.assertRedirects(response, redirect_url)
