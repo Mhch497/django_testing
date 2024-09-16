@@ -35,7 +35,7 @@ class TestContent(TestCase):
                 url = reverse('notes:list')
                 response = self.client.get(url)
                 object_list = response.context['object_list']
-                self.assertEqual(self.note in object_list,  note_in_list)
+                self.assertEqual(self.note in object_list, note_in_list)
 
     def test_authorized_client_has_form(self):
         for url, args in self.urls:

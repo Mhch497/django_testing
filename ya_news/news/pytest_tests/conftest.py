@@ -8,14 +8,6 @@ from news.models import Comment, News
 from yanews import settings
 
 
-# @pytest.fixture
-# def news(db):
-#     return News.objects.create(
-#         title='Заголовок',
-#         text='Текст заметки'
-#     )
-
-
 @pytest.fixture
 def author(django_user_model):
     return django_user_model.objects.create(username='Автор')
