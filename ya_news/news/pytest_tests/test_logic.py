@@ -13,7 +13,6 @@ FORM_DATA = {'text': COMMENT_TEXT}
 NEW_FORM_DATA = {'text': NEW_COMMENT_TEXT}
 
 
-
 def test_anonymous_user_cant_create_comment(
         client, news):
     count_comments_before = Comment.objects.count()
