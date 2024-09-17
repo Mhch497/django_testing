@@ -13,8 +13,10 @@ FORM_DATA = {'text': COMMENT_TEXT}
 NEW_FORM_DATA = {'text': NEW_COMMENT_TEXT}
 
 
+
 def test_anonymous_user_cant_create_comment(
-        client, news, count_comments_before):
+        client, news):
+    count_comments_before = Comment.objects.count()
     url_detail = reverse('news:detail', args=(news.id,))
     client.post(url_detail, data=FORM_DATA)
     comments_count = Comment.objects.count()
@@ -23,9 +25,9 @@ def test_anonymous_user_cant_create_comment(
 
 def test_user_can_create_comment(author_client,
                                  author,
-                                 news,
-                                 count_comments_before):
+                                 news):
     url_detail = reverse('news:detail', args=(news.id,))
+    count_comments_before = Comment.objects.count()
     response = author_client.post(url_detail, data=FORM_DATA)
     assertRedirects(response, url_detail + '#comments')
     comments_count = Comment.objects.count()
@@ -36,7 +38,8 @@ def test_user_can_create_comment(author_client,
     assert comment.author == author
 
 
-def test_user_cant_use_bad_words(author_client, news, count_comments_before):
+def test_user_cant_use_bad_words(author_client, news):
+    count_comments_before = Comment.objects.count()
     url_detail = reverse('news:detail', args=(news.id,))
     bad_words_data = {'text': f'Какой-то текст, {BAD_WORDS[0]}, еще текст'}
     response = author_client.post(url_detail, data=bad_words_data)
@@ -70,7 +73,8 @@ def test_user_cant_edit_comment_of_another_user(
 
 
 def test_author_can_delete_comment(
-        author_client, comment, news, count_comments_before):
+        author_client, comment, news):
+    count_comments_before = Comment.objects.count()
     delete_url = reverse('news:delete', args=(comment.id,))
     url_detail = reverse('news:detail', args=(news.id,))
     response = author_client.delete(delete_url)
@@ -80,7 +84,8 @@ def test_author_can_delete_comment(
 
 
 def test_user_cant_delete_comment_of_another_user(
-        not_author_client, comment, count_comments_before):
+        not_author_client, comment):
+    count_comments_before = Comment.objects.count()
     delete_url = reverse('news:delete', args=(comment.id,))
     response = not_author_client.delete(delete_url)
     assert response.status_code == HTTPStatus.NOT_FOUND

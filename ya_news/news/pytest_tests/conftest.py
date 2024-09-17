@@ -67,8 +67,3 @@ def news(django_user_model):
         comment.created = now + timedelta(days=index)
         comment.save()
     return news
-
-
-@pytest.fixture
-def count_comments_before(news):
-    return Comment.objects.count()
